@@ -1,4 +1,3 @@
-
 var APIKey = "54374761b115880386522bedb63f1a22";
 var searchHistory = [];
 var city;
@@ -18,13 +17,35 @@ $("#search-button").on("click", function(event) {
     url: queryURL,
     method: "GET"
   }).then(function(response) {
-    var weatherIconUrl = "http://openweathermap.org/img/w/" + response.weather[0].icon + ".png";
-    var iconContainer = $("<div id='weather-icon'>").html("<img src='" + weatherIconUrl + "' alt='Weather Icon'>");
+    // var weatherIconUrl = "http://openweathermap.org/img/w/" + response.weather[0].icon + ".png";
+    // var iconContainer = $("<div id='weather-icon'>").html("<img src='" + weatherIconUrl + "' alt='Weather Icon'>");
+    // var celsiusTemp = "Temp: "+(response.main.temp - 273.15).toFixed(2)+"°C";
+    // var windSpeed = "Wind: "+response.wind.speed+" KPH";
+    // var humidity = "Humidity "+response.main.humidity+"%";
+    // var todayCard
+    // today.html(response.name+" ("+date+") "+"</br>"+ celsiusTemp + "</br>"+ windSpeed + "</br>"+ humidity);
+    // today.append(iconContainer);
+
+
+
     var celsiusTemp = "Temp: "+(response.main.temp - 273.15).toFixed(2)+"°C";
     var windSpeed = "Wind: "+response.wind.speed+" KPH";
     var humidity = "Humidity "+response.main.humidity+"%";
-    today.html(response.name+" ("+date+") "+"</br>"+ celsiusTemp + "</br>"+ windSpeed + "</br>"+ humidity);
-    today.append(iconContainer);
+    var todayCard = $("<div>").addClass("card col-md-2 ml-4 bg-primary text-white");
+    var todayCardBody = $("<div>").addClass("card-body p-2");
+    var weatherIconUrl = "http://openweathermap.org/img/w/" + response.weather[0].icon + ".png";
+    var iconContainer = $("<div id='weather-icon'>").html("<img src='" + weatherIconUrl + "' alt='Weather Icon'>");
+    var todayDateDisplay = $("<h5>").text(response.name+" ("+date+")");
+    todayCardBody.append(todayDateDisplay);
+    todayCardBody.append(iconContainer);
+    todayCardBody.append("<p>" + celsiusTemp + "</p>");
+    todayCardBody.append("<p>" + windSpeed + "</p>");
+    todayCardBody.append("<p>" + "Humidity: " + humidity + "</p>");
+    todayCard.append(todayCardBody);
+    today.empty();
+    today.append(todayCard);
+
+
     displayForecast(response.id);
   });
   searchHistory.push(city);
@@ -51,13 +72,35 @@ function renderButtons() {
      method: "GET"
    }).then(function(response) {
      console.log(response);
-     var weatherIconUrl = "http://openweathermap.org/img/w/" + response.weather[0].icon + ".png";
-     var iconContainer = $("<div id='weather-icon'>").html("<img src='" + weatherIconUrl + "' alt='Weather Icon'>");
+    //  var weatherIconUrl = "http://openweathermap.org/img/w/" + response.weather[0].icon + ".png";
+    //  var iconContainer = $("<div id='weather-icon'>").html("<img src='" + weatherIconUrl + "' alt='Weather Icon'>");
      var celsiusTemp = "Temp: "+(response.main.temp - 273.15).toFixed(2)+"°C";
      var windSpeed = "Wind: "+response.wind.speed+" KPH";
      var humidity = "Humidity "+response.main.humidity+"%";
-     today.html(response.name+" ("+date+") "+"</br>"+ celsiusTemp + "</br>"+ windSpeed + "</br>"+ humidity);
-     today.append(iconContainer);
+    //  today.html(response.name+" ("+date+") "+"</br>"+ celsiusTemp + "</br>"+ windSpeed + "</br>"+ humidity);
+    //  today.append(iconContainer);
+
+
+     var todayCard = $("<div>").addClass("card col-md-2 ml-4 bg-primary text-white");
+     var todayCardBody = $("<div>").addClass("card-body p-2");
+     var weatherIconUrl = "http://openweathermap.org/img/w/" + response.weather[0].icon + ".png";
+     var iconContainer = $("<div id='weather-icon'>").html("<img src='" + weatherIconUrl + "' alt='Weather Icon'>");
+     var todayDateDisplay = $("<h5>").text(response.name+" ("+date+")");
+     todayCardBody.append(todayDateDisplay);
+     todayCardBody.append(iconContainer);
+     todayCardBody.append("<p>" + celsiusTemp + "</p>");
+     todayCardBody.append("<p>" + windSpeed + "</p>");
+     todayCardBody.append("<p>" + "Humidity: " + humidity + "</p>");
+     todayCard.append(todayCardBody);
+     today.empty();
+     today.append(todayCard);
+
+
+
+
+
+
+
      displayForecast(response.id);
    });
  });
@@ -79,6 +122,7 @@ function displayForecast(cityID) {
       var forecastDate = moment(response.list[i].dt_txt).add(1, 'days').format("MM/DD/YYYY");
       var forecastTemp = (response.list[i].main.temp - 273.15).toFixed(2) + "°C";
       var forecastHumidity = response.list[i].main.humidity + "%";
+      var forecastWind = response.list[i].wind.speed + " KPH"
       var forecastCard = $("<div>").addClass("card col-md-2 ml-4 bg-primary text-white");
       var forecastCardBody = $("<div>").addClass("card-body p-2");
       var weatherIconUrl = "http://openweathermap.org/img/w/" + response.list[i].weather[0].icon + ".png";
@@ -87,6 +131,7 @@ function displayForecast(cityID) {
       forecastCardBody.append(forecastDateDisplay);
       forecastCardBody.append(iconContainer);
       forecastCardBody.append("<p>" + forecastTemp + "</p>");
+      forecastCardBody.append("<p>" + forecastWind + "</p>");
       forecastCardBody.append("<p>" + "Humidity: " + forecastHumidity + "</p>");
       forecastCard.append(forecastCardBody);
       forecast.append(forecastCard);
