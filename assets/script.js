@@ -11,12 +11,12 @@ $("#search-button").on("click", function(event) {
   if (!city) {
     return;
   }
+
   var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + APIKey;
   $.ajax({
     url: queryURL,
     method: "GET"
   }).then(function(response) {
-    console.log(response);
     var celsiusTemp = "Temp: "+(response.main.temp - 273.15).toFixed(2)+"°C";
     var windSpeed = "Wind: "+response.wind.speed+" KPH";
     var humidity = "Humidity "+response.main.humidity+"%";
@@ -64,7 +64,10 @@ function displayForecast(cityID) {
   method: "GET"
   }).then(function(response) {
   console.log(response);
-  forecast.empty();
+  //clear previous data from the forecast container
+  forecast.empty(); 
+  //OpenWeatherMap API provides weather data in 3 hour increments, and 24/3 = 8;
+  //therefore, I'm incrementing by 8 to skip to the next day's forecast:
   for (var i = 0; i < response.list.length; i+=8) {
   var forecastDate = moment(response.list[i].dt_txt).format("MM/DD/YYYY");
   var forecastTemp = (response.list[i].main.temp - 273.15).toFixed(2) + "°C";
@@ -72,9 +75,9 @@ function displayForecast(cityID) {
   var forecastCard = $("<div>").addClass("card col-md-2 ml-4 bg-primary text-white");
   var forecastCardBody = $("<div>").addClass("card-body p-2");
   var forecastTitle = $("<h5>").addClass("card-title").text(forecastDate);
-  var forecastTempP = $("<p>").addClass("card-text").text("Temp: " + forecastTemp);
-  var forecastHumidityP = $("<p>").addClass("card-text").text("Humidity: " + forecastHumidity);
-  forecastCardBody.append(forecastTitle, forecastTempP, forecastHumidityP);
+  var forecastTempPara = $("<p>").addClass("card-text").text("Temp: " + forecastTemp);
+  var forecastHumidityPara = $("<p>").addClass("card-text").text("Humidity: " + forecastHumidity);
+  forecastCardBody.append(forecastTitle, forecastTempPara, forecastHumidityPara);
   forecastCard.append(forecastCardBody);
   forecast.append(forecastCard);
   }
