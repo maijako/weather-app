@@ -1,9 +1,3 @@
-//TODO Display London weather by default when document loads
-//TODO style the 'today' section as a bootstrap card
-//TODO style buttons in css so they have padding around them
-//TODO wrap icon display in a function so there's no repeated code
-//TODO add logic to prevent user entering misspelled or invalid cities
-
 
 var APIKey = "54374761b115880386522bedb63f1a22";
 var searchHistory = [];
@@ -13,7 +7,7 @@ var forecast = $("#forecast");
 var date = moment().format("MM/DD/YYYY");
 
 $("#search-button").on("click", function(event) {
-  event.preventDefault(); 
+  event.preventDefault();
   city = $("#search-input").val().trim();
   if (!city) {
     return;
@@ -34,6 +28,7 @@ $("#search-button").on("click", function(event) {
     displayForecast(response.id);
   });
   searchHistory.push(city);
+  $("#search-input").val("");
   renderButtons();
 });
 
