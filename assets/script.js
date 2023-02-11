@@ -68,23 +68,23 @@ function displayForecast(cityID) {
     method: "GET"
   }).then(function(response) {
     console.log(response);
-    //clear previous data from the forecast container
-    forecast.empty(); 
+    forecast.empty();
     //OpenWeatherMap API provides weather data in 3 hour increments, and 24/3 = 8;
     //therefore, I'm incrementing by 8 to skip to the next day's forecast:
     for (var i = 1; i < response.list.length; i+=8) {
-      //use .add  method to add 1 day to the object so that the forecast begins with the following day
       var forecastDate = moment(response.list[i].dt_txt).add(1, 'days').format("MM/DD/YYYY");
       var forecastTemp = (response.list[i].main.temp - 273.15).toFixed(2) + "°C";
       var forecastHumidity = response.list[i].main.humidity + "%";
       var forecastCard = $("<div>").addClass("card col-md-2 ml-4 bg-primary text-white");
       var forecastCardBody = $("<div>").addClass("card-body p-2");
-      //display icons next to each forecast
       var weatherIconUrl = "http://openweathermap.org/img/w/" + response.list[i].weather[0].icon + ".png";
       var iconContainer = $("<div id='weather-icon'>").html("<img src='" + weatherIconUrl + "' alt='Weather Icon'>");
-      forecastCardBody.html("<h5 class='card-title'>" + forecastDate + "</h5>" + "<p class='card-text'>" + "Temp: " + forecastTemp + "</p>" + "<p class='card-text'>" + "Humidity: " + forecastHumidity + "</p>");
+      var forecastDateDisplay = $("<h5>").text(forecastDate);
+      forecastCardBody.append(forecastDateDisplay);
+      forecastCardBody.append(iconContainer);
+      forecastCardBody.append("<p>" + forecastTemp + "</p>");
+      forecastCardBody.append("<p>" + "Humidity: " + forecastHumidity + "</p>");
       forecastCard.append(forecastCardBody);
-      forecastCard.prepend(iconContainer);
       forecast.append(forecastCard);
     }
   });
