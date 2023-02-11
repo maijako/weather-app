@@ -2,6 +2,9 @@
 var APIKey = "54374761b115880386522bedb63f1a22";
 var searchHistory = [];
 var city;
+var today = $("#today");
+// Create an object for date
+var date = moment().format("MM/DD/YYYY");
 
 // This function handles events where the add a city to history when search button is clicked
 $("#search-button").on("click", function(event) {
@@ -16,8 +19,14 @@ $("#search-button").on("click", function(event) {
     url: queryURL,
     method: "GET"
   }).then(function(response) {
-    //a console log for grabbing the data 
-    console.log(response);
+  //a console log for grabbing the data 
+  console.log(response);
+  // Weather data to display stored in variables
+  var celsiusTemp = "Temp: "+(response.main.temp - 273.15).toFixed(2)+"°C";
+  var windSpeed = "Wind: "+response.wind.speed+" KPH";
+  var humidity = "Humidity "+response.main.humidity+"%";
+  // Update the text in the "today" section
+  today.html(celsiusTemp + "</br>"+ windSpeed + "</br>"+ humidity);
   });
   searchHistory.push(city);
   renderButtons();
@@ -40,6 +49,7 @@ function renderButtons() {
      a.text(searchHistory[i]);
      // Added the button to the buttons-view div
      $(".list-group").append(a);
+     //Add logic here to display searchHistory[i] in 'today' container
    }
  }
  
