@@ -11,7 +11,9 @@ The current weather conditions for any city include:
 * temperature
 * humidity
 * wind speed
+
 The future weather conditions include a 5-day forecast that displays:
+
 * date
 * an icon representation of weather conditions
 * temperature
