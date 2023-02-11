@@ -47,7 +47,7 @@ function renderButtons() {
    $(".list-group").empty();
    for (var i = 0; i < searchHistory.length; i++) {
      var a = $("<button>");
-     a.addClass("city btn-info");
+     a.addClass("city btn-secondary");
      a.attr("data-name", searchHistory[i]);
      a.text(searchHistory[i]);
      $(".list-group").append(a);
@@ -82,7 +82,7 @@ function displayForecast(cityID) {
       var forecastTemp = (response.list[i].main.temp - 273.15).toFixed(2) + "°C";
       var forecastHumidity = response.list[i].main.humidity + "%";
       var forecastWind = response.list[i].wind.speed + " KPH"
-      var forecastCard = $("<div>").addClass("card col-md-2 ml-4 bg-primary text-white");
+      var forecastCard = $("<div>").addClass("card col-md-2 ml-4 text-white forecast-info");
       var forecastCardBody = $("<div>").addClass("card-body p-2");
       var weatherIconUrl = "http://openweathermap.org/img/w/" + response.list[i].weather[0].icon + ".png";
       var iconContainer = $("<div id='weather-icon'>").html("<img src='" + weatherIconUrl + "' alt='Weather Icon'>");

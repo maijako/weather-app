@@ -1,4 +1,13 @@
-.btn-info {
+.btn-secondary {
    margin-bottom: 5px;
    border-radius: 4px;
+}
+
+.forecast-info {
+    background-color: rgb(49, 51, 70);
+}
+
+h4 {
+    font-size: medium;
+    font-weight: bold;
 }
