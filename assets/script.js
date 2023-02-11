@@ -1,3 +1,10 @@
+//TODO Display London weather by default when document loads
+//TODO style the 'today' section as a bootstrap card
+//TODO style buttons in css so they have padding around them
+//TODO wrap icon display in a function so there's no repeated code
+//TODO add logic to prevent user entering misspelled or invalid cities
+
+
 var APIKey = "54374761b115880386522bedb63f1a22";
 var searchHistory = [];
 var city;
@@ -34,7 +41,7 @@ function renderButtons() {
    $(".list-group").empty();
    for (var i = 0; i < searchHistory.length; i++) {
      var a = $("<button>");
-     a.addClass("city");
+     a.addClass("city btn-info");
      a.attr("data-name", searchHistory[i]);
      a.text(searchHistory[i]);
      $(".list-group").append(a);
