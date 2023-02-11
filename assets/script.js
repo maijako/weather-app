@@ -11,16 +11,20 @@ $("#search-button").on("click", function(event) {
   if (!city) {
     return;
   }
-
+//an ajax call to display today's weather data
   var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + APIKey;
   $.ajax({
     url: queryURL,
     method: "GET"
   }).then(function(response) {
+    var weatherIconUrl = "http://openweathermap.org/img/w/" + response.weather[0].icon + ".png";
+    var iconContainer = $("<div id='weather-icon'>").html("<img src='" + weatherIconUrl + "' alt='Weather Icon'>");
+
     var celsiusTemp = "Temp: "+(response.main.temp - 273.15).toFixed(2)+"°C";
     var windSpeed = "Wind: "+response.wind.speed+" KPH";
     var humidity = "Humidity "+response.main.humidity+"%";
     today.html(response.name+" ("+date+") "+"</br>"+ celsiusTemp + "</br>"+ windSpeed + "</br>"+ humidity);
+    today.append(iconContainer);
     displayForecast(response.id);
   });
   searchHistory.push(city);
@@ -49,7 +53,7 @@ function renderButtons() {
      var celsiusTemp = "Temp: "+(response.main.temp - 273.15).toFixed(2)+"°C";
      var windSpeed = "Wind: "+response.wind.speed+" KPH";
      var humidity = "Humidity "+response.main.humidity+"%";
-     today.html(response.name+" ("+date+") "+"</br>"+ celsiusTemp + "</br>"+ windSpeed + "</br>"+ humidity);
+     today.html(response.name+" ("+date+") "+iconContainer+"</br>"+ celsiusTemp + "</br>"+ windSpeed + "</br>"+ humidity);
      displayForecast(response.id);
    });
  });
@@ -74,6 +78,11 @@ function displayForecast(cityID) {
   var forecastHumidity = response.list[i].main.humidity + "%";
   var forecastCard = $("<div>").addClass("card col-md-2 ml-4 bg-primary text-white");
   var forecastCardBody = $("<div>").addClass("card-body p-2");
+  //display icons next to each forecast
+  var weatherIconUrl = "http://openweathermap.org/img/w/" + response.list[i].weather[0].icon + ".png";
+  var iconContainer = $("<div id='weather-icon'>").html("<img src='" + weatherIconUrl + "' alt='Weather Icon'>");
+  forecastCardBody.append(iconContainer);
+
   var forecastTitle = $("<h5>").addClass("card-title").text(forecastDate);
   var forecastTempPara = $("<p>").addClass("card-text").text("Temp: " + forecastTemp);
   var forecastHumidityPara = $("<p>").addClass("card-text").text("Humidity: " + forecastHumidity);
