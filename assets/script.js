@@ -1,12 +1,10 @@
-//Variables
 var APIKey = "54374761b115880386522bedb63f1a22";
 var searchHistory = [];
 var city;
 var today = $("#today");
-// Create an object for date
+var forecast = $("#forecast");
 var date = moment().format("MM/DD/YYYY");
 
-// This function handles events where the add a city to history when search button is clicked
 $("#search-button").on("click", function(event) {
   event.preventDefault(); 
   city = $("#search-input").val().trim();
@@ -14,49 +12,50 @@ $("#search-button").on("click", function(event) {
     return;
   }
   var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + APIKey;
-  // an AJAX call
   $.ajax({
     url: queryURL,
     method: "GET"
   }).then(function(response) {
-  //a console log for grabbing the data 
-  console.log(response);
-  // Weather data to display stored in variables
-  var celsiusTemp = "Temp: "+(response.main.temp - 273.15).toFixed(2)+"°C";
-  var windSpeed = "Wind: "+response.wind.speed+" KPH";
-  var humidity = "Humidity "+response.main.humidity+"%";
-  // Update the text in the "today" section
-  today.html(celsiusTemp + "</br>"+ windSpeed + "</br>"+ humidity);
+    console.log(response);
+    var celsiusTemp = "Temp: "+(response.main.temp - 273.15).toFixed(2)+"°C";
+    var windSpeed = "Wind: "+response.wind.speed+" KPH";
+    var humidity = "Humidity "+response.main.humidity+"%";
+    today.html(response.name+" ("+date+") "+"</br>"+ celsiusTemp + "</br>"+ windSpeed + "</br>"+ humidity);
+    // displayForecast(response.id);
   });
   searchHistory.push(city);
   renderButtons();
 });
 
-//Function for displaying city data in search history as buttons
 function renderButtons() {
-   // Deletes the city data prior to adding new cities from search
    $(".list-group").empty();
-
-   // Loops through the array of cities from the search history
    for (var i = 0; i < searchHistory.length; i++) {
-     // Then dynamicaly generates buttons for each city in the array
      var a = $("<button>");
-     // Adds a class of movie to our button
      a.addClass("city");
-     // Added a data-attribute
      a.attr("data-name", searchHistory[i]);
-     // Provided the initial button text
      a.text(searchHistory[i]);
-     // Added the button to the buttons-view div
      $(".list-group").append(a);
-     //Add logic here to display searchHistory[i] in 'today' container
    }
  }
  
- // Adding click event listeners to all elements with a class of "city"
  $(document).on("click", ".city", function() {
-   // Add logic here to display information about the city
+   var city = $(this).attr("data-name");
+   var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + APIKey;
+   $.ajax({
+     url: queryURL,
+     method: "GET"
+   }).then(function(response) {
+     console.log(response);
+     var celsiusTemp = "Temp: "+(response.main.temp - 273.15).toFixed(2)+"°C";
+     var windSpeed = "Wind: "+response.wind.speed+" KPH";
+     var humidity = "Humidity "+response.main.humidity+"%";
+     today.html(response.name+" ("+date+") "+"</br>"+ celsiusTemp + "</br>"+ windSpeed + "</br>"+ humidity);
+    //  displayForecast(response.id);
+   });
  });
-
- // Calling the renderButtons function to display the initial buttons
+ 
  renderButtons();
+
+// Function to display the five-day weather forecast
+// function displayForecast(cityID) {
+//   var forecastURL = "https://api.openweathermap.org/data/2.5/forecast?id=" + cityID
