@@ -32,6 +32,9 @@ $("#search-button").on("click", function(event) {
   if (!city) {
     return;
   }
+  if (searchHistory.includes(city)) {
+    return;
+  }
   var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + APIKey;
   $.ajax({
     url: queryURL,
