@@ -1,5 +1,5 @@
 var APIKey = "54374761b115880386522bedb63f1a22";
-var searchHistory = [];
+var searchHistory = JSON.parse(localStorage.getItem("searchHistory")) || [];
 var city;
 var today = $("#today");
 var forecast = $("#forecast");
@@ -24,7 +24,7 @@ function displayWeatherData(response) {
   today.empty();
   today.append(todayCard);
   displayForecast(response.id);
-}
+  }
 
 $("#search-button").on("click", function(event) {
   event.preventDefault();
@@ -42,6 +42,7 @@ $("#search-button").on("click", function(event) {
   }).then(displayWeatherData);
 
   searchHistory.push(city);
+  localStorage.setItem("searchHistory", JSON.stringify(searchHistory));
   $("#search-input").val("");
   renderButtons();
 });
@@ -100,4 +101,3 @@ function displayForecast(cityID) {
     }
   });
 }
-
