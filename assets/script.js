@@ -31,7 +31,7 @@ $("#search-button").on("click", function(event) {
     var celsiusTemp = "Temp: "+(response.main.temp - 273.15).toFixed(2)+"°C";
     var windSpeed = "Wind: "+response.wind.speed+" KPH";
     var humidity = "Humidity "+response.main.humidity+"%";
-    var todayCard = $("<div>").addClass("card col-md-2 ml-4 bg-primary text-white");
+    var todayCard = $("<div>").addClass("card bg-primary text-white");
     var todayCardBody = $("<div>").addClass("card-body p-2");
     var weatherIconUrl = "http://openweathermap.org/img/w/" + response.weather[0].icon + ".png";
     var iconContainer = $("<div id='weather-icon'>").html("<img src='" + weatherIconUrl + "' alt='Weather Icon'>");
@@ -81,7 +81,7 @@ function renderButtons() {
     //  today.append(iconContainer);
 
 
-     var todayCard = $("<div>").addClass("card col-md-2 ml-4 bg-primary text-white");
+     var todayCard = $("<div>").addClass("card bg-primary text-white");
      var todayCardBody = $("<div>").addClass("card-body p-2");
      var weatherIconUrl = "http://openweathermap.org/img/w/" + response.weather[0].icon + ".png";
      var iconContainer = $("<div id='weather-icon'>").html("<img src='" + weatherIconUrl + "' alt='Weather Icon'>");
