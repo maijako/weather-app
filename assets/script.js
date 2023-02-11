@@ -10,8 +10,8 @@ function displayWeatherData(response) {
   var celsiusTemp = "Temp: " + (response.main.temp - 273.15).toFixed(2) + "°C";
   var windSpeed = "Wind: " + response.wind.speed + " KPH";
   var humidity = "Humidity " + response.main.humidity + "%";
-  var todayCard = $("<div>").addClass("card bg-primary text-white");
-  var todayCardBody = $("<div>").addClass("card-body p-2");
+  var todayCard = $("<div>").addClass("card bg-light border-dark");
+  var todayCardBody = $("<div>").addClass("card-body text-dark p-2");
   var weatherIconUrl = "http://openweathermap.org/img/w/" + response.weather[0].icon + ".png";
   var iconContainer = $("<div id='weather-icon'>").html("<img src='" + weatherIconUrl + "' alt='Weather Icon'>");
   var todayDateDisplay = $("<h5>").text(response.name + " (" + date + ")");
@@ -32,7 +32,6 @@ $("#search-button").on("click", function(event) {
   if (!city) {
     return;
   }
-//an ajax call to display today's weather data
   var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + APIKey;
   $.ajax({
     url: queryURL,
@@ -64,7 +63,6 @@ function renderButtons() {
    }).then(displayWeatherData);
    });
  
- 
  renderButtons();
 
 // Function to display the five-day weather forecast
@@ -78,6 +76,7 @@ function displayForecast(cityID) {
     forecast.empty();
     //OpenWeatherMap API provides weather data in 3 hour increments, and 24/3 = 8;
     //therefore, I'm incrementing by 8 to skip to the next day's forecast:
+    today.append("<br>"+"<h4>"+"5-Day Forecast:"+"</h4>");
     for (var i = 1; i < response.list.length; i+=8) {
       var forecastDate = moment(response.list[i].dt_txt).add(1, 'days').format("MM/DD/YYYY");
       var forecastTemp = (response.list[i].main.temp - 273.15).toFixed(2) + "°C";
@@ -90,8 +89,8 @@ function displayForecast(cityID) {
       var forecastDateDisplay = $("<h5>").text(forecastDate);
       forecastCardBody.append(forecastDateDisplay);
       forecastCardBody.append(iconContainer);
-      forecastCardBody.append("<p>" + forecastTemp + "</p>");
-      forecastCardBody.append("<p>" + forecastWind + "</p>");
+      forecastCardBody.append("<p>" + "Temp: "+ forecastTemp + "</p>");
+      forecastCardBody.append("<p>"+ "wind: "+ forecastWind + "</p>");
       forecastCardBody.append("<p>" + "Humidity: " + forecastHumidity + "</p>");
       forecastCard.append(forecastCardBody);
       forecast.append(forecastCard);
